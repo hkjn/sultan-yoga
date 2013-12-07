@@ -1,16 +1,16 @@
 package yoga
 
 import (
-    "fmt"
-    "net/http"
+	"fmt"
+	"net/http"
 
-		"appengine"
-		"appengine/user"
+	"appengine"
+	"appengine/user"
 )
 
 func init() {
-    http.HandleFunc("/", indexHandler)
-    http.HandleFunc("/login", loginHandler)
+	http.HandleFunc("/", indexHandler)
+	http.HandleFunc("/login", loginHandler)
 }
 
 const embedPage = `
@@ -46,21 +46,21 @@ div#main {
 `
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-		 fmt.Fprint(w, embedPage)
+	fmt.Fprint(w, embedPage)
 }
 
 func loginHandler(w http.ResponseWriter, r *http.Request) {
-		 c := appengine.NewContext(r)
-		 u := user.Current(c)
-		 if u == nil {
-		 		url, err := user.LoginURL(c, r.URL.String())
-				if err != nil {
-					 http.Error(w, err.Error(), http.StatusInternalServerError)
-					 return
-				}
-				w.Header().Set("Location", url)
-				w.WriteHeader(http.StatusFound)
-				return
-		 }
-		 fmt.Fprintf(w, "Hello, %v!", u)
+	c := appengine.NewContext(r)
+	u := user.Current(c)
+	if u == nil {
+		url, err := user.LoginURL(c, r.URL.String())
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Location", url)
+		w.WriteHeader(http.StatusFound)
+		return
+	}
+	fmt.Fprintf(w, "Hello, %v!", u)
 }
